@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Custom CSS for the dashboard */
+    .dashboard-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #1e2a47, #2f4b85); /* Gradient background */
+    }
+    .navbar {
+      background-color: #2f4b85;
+      padding: 10px 20px;
+    }
+    .navbar-brand {
+      color: #ffffff;
+    }
+    .navbar-nav .nav-link {
+      color: #ffffff;
+      font-size: 1.2rem;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #00e676; /* Green hover effect */
+    }
+    .dashboard-card {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      color: #ffffff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    .dashboard-card h2 {
+      font-size: 2rem;
+      color: #00bcd4; /* Cyan color */
+      margin-bottom: 1.5rem;
+    }
+    .dashboard-card button {
+      background: #00e676;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      width: 100%;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .dashboard-card button:hover {
+      background: #00c853; /* Darker green on hover */
+    }
+    .file-upload {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Attendance Dashboard</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <button class="btn btn-outline-light" id="login-btn" style="display: none;">Sign In</button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-light" id="logout-btn" style="display: none;">Sign Out</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <!-- Dashboard Content -->
+    <div class="dashboard-card">
+      <h2>Upload Attendance Photo</h2>
+      <form id="upload-form">
+        <div class="file-upload">
+          <input type="file" class="form-control" id="attendance-photo" accept="image/*" required>
+        </div>
+        <button type="submit">Upload Photo</button>
+      </form>
+      <div id="upload-status"></div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript for login/logout and file upload functionality
+    const loginButton = document.getElementById('login-btn');
+    const logoutButton = document.getElementById('logout-btn');
+    const uploadForm = document.getElementById('upload-form');
+    const uploadStatus = document.getElementById('upload-status');
+    
+    // Simulate a simple login system
+    let isLoggedIn = true; // Assume logged in when on the dashboard page
+
+    // Toggle login/logout buttons
+    function updateAuthButtons() {
+      if (isLoggedIn) {
+        loginButton.style.display = 'none';
+        logoutButton.style.display = 'block';
+      } else {
+        loginButton.style.display = 'block';
+        logoutButton.style.display = 'none';
+      }
+    }
+
+    // Handle login
+    loginButton.addEventListener('click', () => {
+      isLoggedIn = true;
+      updateAuthButtons();
+      uploadStatus.innerHTML = ''; // Clear any previous messages
+    });
+
+    // Handle logout (redirect to login page)
+    logoutButton.addEventListener('click', () => {
+      isLoggedIn = false;
+      updateAuthButtons();
+      uploadStatus.innerHTML = 'You have been logged out.';
+      // Redirect to login page
+      setTimeout(() => {
+        window.location.href = 'login.html'; // Replace 'login.html' with your actual login page URL
+      }, 1000); // 1 second delay before redirect
+    });
+
+    // Handle file upload
+    uploadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (!isLoggedIn) {
+        uploadStatus.innerHTML = '<p style="color: red;">Please sign in first to upload a photo.</p>';
+        return;
+      }
+
+      const photoInput = document.getElementById('attendance-photo');
+      const file = photoInput.files[0];
+
+      if (file) {
+        // Simulate a file upload
+        uploadStatus.innerHTML = `<p style="color: green;">Successfully uploaded: ${file.name}</p>`;
+      } else {
+        uploadStatus.innerHTML = '<p style="color: red;">Please select a file to upload.</p>';
+      }
+    });
+
+    // Initialize buttons based on login state
+    updateAuthButtons();
+  </script>
+</body>
+</html>
